@@ -24,13 +24,13 @@ export const handler = async (event) => {
     let finalImageUrl = image_url;
     if (!finalImageUrl && file_id) {
       const getFileRes = await fetch(
-        `https://api.telegram.org/bot${8499683148:AAFrOMW5kJQoHRsooh1YlgjjDK3NBw_APyw}/getFile?file_id=${file_id}`
+        `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getFile?file_id=${file_id}`
       );
       const gf = await getFileRes.json();
       if (!gf.ok || !gf.result?.file_path) {
         return { statusCode: 400, body: JSON.stringify({ error: "Cannot resolve Telegram file" }) };
       }
-      finalImageUrl = `https://api.telegram.org/file/bot${8499683148:AAFrOMW5kJQoHRsooh1YlgjjDK3NBw_APyw}/${gf.result.file_path}`;
+      finalImageUrl = `https://api.telegram.org/file/bot${TELEGRAM_BOT_TOKEN}/${gf.result.file_path}`;
     }
 
     // 2️⃣ Ask OpenAI Vision
@@ -54,7 +54,7 @@ export const handler = async (event) => {
     const aiRes = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${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}`,
+        "Authorization": `Bearer ${OPENAI_API_KEY}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify(payload)
